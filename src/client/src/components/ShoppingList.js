@@ -6,6 +6,7 @@ import {
   TextInput,
 } from 'evergreen-ui'
 import uuid from 'uuid'
+import axios from 'axios'
 
 import ShoppingListContext from '../context/ShoppingList'
 
@@ -67,15 +68,18 @@ function ShoppingListItem({ name, removeShoppingItem }) {
 
 function ShoppingList() {
   const {
-    isFetching,
-    fetchShoppingItems,
     shoppingItems,
     addShoppingItem,
     removeShoppingItem
   } = React.useContext(ShoppingListContext)
+
   React.useEffect(() => {
+    const fetchShoppingItems = async () => {
+      const response = await axios.get('/traversy-mern/v1')
+      console.log(response.data)
+    }
     fetchShoppingItems()
-  }, [fetchShoppingItems, shoppingItems])
+  }, [])
 
   return (
     <React.Fragment>
@@ -84,9 +88,9 @@ function ShoppingList() {
       {shoppingItems && shoppingItems.map(item => {
         return (
           <ShoppingListItem
-            key={item.id}
+            key={item._id}
             name={item.name}
-            removeShoppingItem={() => removeShoppingItem(item.id)}
+            removeShoppingItem={() => removeShoppingItem(item._id)}
           />
         )
       })}
