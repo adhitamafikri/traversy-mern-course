@@ -23,11 +23,8 @@ function ShoppingItemForm({ addShoppingItem }) {
   const handleSubmission = (e) => {
     e.preventDefault()
     setNewItem({ ...newItem, id: uuid() })
-    console.log('to be submitted', newItem)
     addShoppingItem(newItem)
   }
-
-  console.log(newItem)
 
   return (
     <Pane marginTop={32}>
@@ -70,11 +67,16 @@ function ShoppingListItem({ name, removeShoppingItem }) {
 
 function ShoppingList() {
   const {
+    isFetching,
+    fetchShoppingItems,
     shoppingItems,
     addShoppingItem,
     removeShoppingItem
   } = React.useContext(ShoppingListContext)
-  console.log('your items', shoppingItems)
+  React.useEffect(() => {
+    fetchShoppingItems()
+  }, [fetchShoppingItems, shoppingItems])
+
   return (
     <React.Fragment>
       <h1>Shopping Items</h1>
