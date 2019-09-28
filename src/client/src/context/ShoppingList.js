@@ -30,6 +30,7 @@ export function ShoppingListProvider(props) {
     <ShoppingListContext.Provider
       value={{
         shoppingItems,
+        setShoppingItems,
         addShoppingItem,
         removeShoppingItem
       }}

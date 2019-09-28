@@ -4,6 +4,7 @@ import {
   Text,
   Button,
   TextInput,
+  Spinner,
 } from 'evergreen-ui'
 import uuid from 'uuid'
 import axios from 'axios'
@@ -69,14 +70,23 @@ function ShoppingListItem({ name, removeShoppingItem }) {
 function ShoppingList() {
   const {
     shoppingItems,
+    setShoppingItems,
     addShoppingItem,
     removeShoppingItem
   } = React.useContext(ShoppingListContext)
+  const [loading, setLoading] = React.useState(true)
 
   React.useEffect(() => {
     const fetchShoppingItems = async () => {
-      const response = await axios.get('/traversy-mern/v1')
-      console.log(response.data)
+      try {
+        const response = await axios.get('/traversy-mern/v1')
+        console.log(response.data)
+        setShoppingItems([...shoppingItems, ...response.data])
+        setLoading(false)
+      } catch(err) {
+        console.log(err)
+        setLoading(false)
+      }
     }
     fetchShoppingItems()
   }, [])
@@ -85,7 +95,9 @@ function ShoppingList() {
     <React.Fragment>
       <h1>Shopping Items</h1>
 
-      {shoppingItems && shoppingItems.map(item => {
+      {loading && <Spinner />}
+
+      {!loading && shoppingItems && shoppingItems.map(item => {
         return (
           <ShoppingListItem
             key={item._id}
