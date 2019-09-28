@@ -13,7 +13,7 @@ import ShoppingListContext from '../context/ShoppingList'
 
 function ShoppingItemForm({ addShoppingItem }) {
   const [newItem, setNewItem] = React.useState({
-    id: '',
+    _id: '',
     name: '',
   })
 
@@ -24,7 +24,7 @@ function ShoppingItemForm({ addShoppingItem }) {
 
   const handleSubmission = (e) => {
     e.preventDefault()
-    setNewItem({ ...newItem, id: uuid() })
+    setNewItem({ ...newItem, _id: uuid() })
     addShoppingItem(newItem)
   }
 
@@ -91,6 +91,7 @@ function ShoppingList() {
     fetchShoppingItems()
   }, [])
 
+  console.log('shopping items', shoppingItems)
   return (
     <React.Fragment>
       <h1>Shopping Items</h1>

@@ -22,7 +22,7 @@ export function ShoppingListProvider(props) {
 
   const removeShoppingItem = (uuid) => {
     console.log('removing shopping items', uuid)
-    const newValue = shoppingItems.filter(x => x.id !== uuid)
+    const newValue = shoppingItems.filter(x => x._id !== uuid)
     setShoppingItems(newValue)
   }
 
