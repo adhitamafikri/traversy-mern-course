@@ -6,31 +6,22 @@ import {
   TextInput,
   Spinner,
 } from 'evergreen-ui'
-import uuid from 'uuid'
-import axios from 'axios'
 
 import ShoppingListContext from '../context/ShoppingList'
 
 function ShoppingItemForm({ addShoppingItem }) {
-  const [newItem, setNewItem] = React.useState({
-    _id: '',
-    name: '',
-  })
+  const [newItem, setNewItem] = React.useState('')
 
-  const handleChange = (e) => {
-    const val = e.target.value
-    setNewItem({ ...newItem, name: val })
-  }
+  const handleChange = (e) => setNewItem(e.target.value)
 
   const handleSubmission = (e) => {
     e.preventDefault()
-    setNewItem({ ...newItem, _id: uuid() })
     addShoppingItem(newItem)
   }
 
   return (
     <Pane marginTop={32}>
-      <form onSubmit={handleSubmission}>
+      <form onSubmit={handleSubmission} autoComplete="off">
         <Pane>
           <TextInput
             placeholder="item name..."
@@ -69,25 +60,14 @@ function ShoppingListItem({ name, removeShoppingItem }) {
 
 function ShoppingList() {
   const {
+    loading,
     shoppingItems,
-    setShoppingItems,
+    fetchShoppingItems,
     addShoppingItem,
     removeShoppingItem
   } = React.useContext(ShoppingListContext)
-  const [loading, setLoading] = React.useState(true)
 
   React.useEffect(() => {
-    const fetchShoppingItems = async () => {
-      try {
-        const response = await axios.get('/traversy-mern/v1')
-        console.log(response.data)
-        setShoppingItems([...shoppingItems, ...response.data])
-        setLoading(false)
-      } catch(err) {
-        console.log(err)
-        setLoading(false)
-      }
-    }
     fetchShoppingItems()
   }, [])
 

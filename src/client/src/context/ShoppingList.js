@@ -1,5 +1,6 @@
 import React, { createContext } from 'react'
 import uuid from 'uuid'
+import axios from 'axios'
 
 const itemList = [
   { _id: uuid(), name: 'Egg' },
@@ -12,12 +13,32 @@ const itemList = [
 const ShoppingListContext = createContext({})
 
 export function ShoppingListProvider(props) {
+  const [loading, setLoading] = React.useState(true)
   const [shoppingItems, setShoppingItems] = React.useState(itemList)
 
-  const addShoppingItem = (newItem) => {
-    console.log('adding new shopping item', newItem)
-    const items = [...shoppingItems, newItem]
-    setShoppingItems(items)
+  const fetchShoppingItems = async () => {
+    try {
+      setLoading(true)
+      const response = await axios.get('/traversy-mern/v1')
+      console.log(response.data)
+      setShoppingItems([...shoppingItems, ...response.data])
+    } catch(err) {
+      console.log(err)
+    }
+    setLoading(false)
+  }
+
+  const addShoppingItem = async (newItem) => {
+    try {
+      setLoading(true)
+      const response = await axios.post('/traversy-mern/v1', { name: newItem })
+      const savedItem = { _id: response.data._id, name: response.data.name }
+      const items = [...shoppingItems, savedItem]
+      setShoppingItems(items)
+    } catch(err) {
+      console.log(err)
+    }
+    setLoading(false)
   }
 
   const removeShoppingItem = (uuid) => {
@@ -29,8 +50,9 @@ export function ShoppingListProvider(props) {
   return (
     <ShoppingListContext.Provider
       value={{
+        loading,
         shoppingItems,
-        setShoppingItems,
+        fetchShoppingItems,
         addShoppingItem,
         removeShoppingItem
       }}
