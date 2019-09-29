@@ -3,13 +3,13 @@ const Item = require('../models/Item')
 
 const router = Router()
 
-router.get('/', (req, res) => {
+router.get('/items', (req, res) => {
   Item.find()
     .then(items => res.json(items))
     .catch(err => res.json(err))
 })
 
-router.post('/', (req, res) => {
+router.post('/items', (req, res) => {
   const newItem = new Item({
     name: req.body.name
   })
@@ -18,7 +18,7 @@ router.post('/', (req, res) => {
     .then(item => res.json(item))
 })
 
-router.delete('/:id', (req, res) => {
+router.delete('/items/:id', (req, res) => {
   Item.findById(req.params.id)
     .then(item => {
       item.remove()

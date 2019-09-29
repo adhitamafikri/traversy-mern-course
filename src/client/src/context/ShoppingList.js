@@ -14,12 +14,12 @@ const ShoppingListContext = createContext({})
 
 export function ShoppingListProvider(props) {
   const [loading, setLoading] = React.useState(true)
-  const [shoppingItems, setShoppingItems] = React.useState(itemList)
+  const [shoppingItems, setShoppingItems] = React.useState([])
 
   const fetchShoppingItems = async () => {
     try {
       setLoading(true)
-      const response = await axios.get('/traversy-mern/v1')
+      const response = await axios.get('/traversy-mern/v1/items')
       console.log(response.data)
       setShoppingItems([...shoppingItems, ...response.data])
     } catch(err) {
@@ -31,7 +31,7 @@ export function ShoppingListProvider(props) {
   const addShoppingItem = async (newItem) => {
     try {
       setLoading(true)
-      const response = await axios.post('/traversy-mern/v1', { name: newItem })
+      const response = await axios.post('/traversy-mern/v1/items', { name: newItem })
       const savedItem = { _id: response.data._id, name: response.data.name }
       const items = [...shoppingItems, savedItem]
       setShoppingItems(items)
@@ -41,10 +41,17 @@ export function ShoppingListProvider(props) {
     setLoading(false)
   }
 
-  const removeShoppingItem = (uuid) => {
-    console.log('removing shopping items', uuid)
-    const newValue = shoppingItems.filter(x => x._id !== uuid)
-    setShoppingItems(newValue)
+  const removeShoppingItem = async (_id) => {
+    console.log('removing shopping items', _id)
+    try {
+      setLoading(true)
+      const response = await axios.delete(`/traversy-mern/v1/items/${_id}`)
+      const newValue = shoppingItems.filter(x => x._id !== _id)
+      setShoppingItems(newValue)
+    } catch(err) {
+      console.log(err)
+    }
+    setLoading(false)
   }
 
   return (
