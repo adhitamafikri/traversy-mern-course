@@ -1,14 +1,5 @@
 import React, { createContext } from 'react'
-import uuid from 'uuid'
 import axios from 'axios'
-
-const itemList = [
-  { _id: uuid(), name: 'Egg' },
-  { _id: uuid(), name: 'Carrot' },
-  { _id: uuid(), name: 'Eggplant' },
-  { _id: uuid(), name: 'Honey' },
-  { _id: uuid(), name: 'Mustard' },
-]
 
 const ShoppingListContext = createContext({})
 
@@ -46,8 +37,10 @@ export function ShoppingListProvider(props) {
     try {
       setLoading(true)
       const response = await axios.delete(`/traversy-mern/v1/items/${_id}`)
-      const newValue = shoppingItems.filter(x => x._id !== _id)
-      setShoppingItems(newValue)
+      if (response.status === 200) {
+        const newValue = shoppingItems.filter(x => x._id !== _id)
+        setShoppingItems(newValue)
+      }
     } catch(err) {
       console.log(err)
     }
