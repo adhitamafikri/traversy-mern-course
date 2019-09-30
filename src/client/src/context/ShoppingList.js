@@ -11,7 +11,6 @@ export function ShoppingListProvider(props) {
     try {
       setLoading(true)
       const response = await axios.get('/traversy-mern/v1/items')
-      console.log(response.data)
       setShoppingItems([...shoppingItems, ...response.data])
     } catch(err) {
       console.log(err)
@@ -33,7 +32,7 @@ export function ShoppingListProvider(props) {
   }
 
   const removeShoppingItem = async (_id) => {
-    console.log('removing shopping items', _id)
+    console.log('removing shopping items from function', _id)
     try {
       setLoading(true)
       const response = await axios.delete(`/traversy-mern/v1/items/${_id}`)
@@ -54,7 +53,7 @@ export function ShoppingListProvider(props) {
         shoppingItems,
         fetchShoppingItems,
         addShoppingItem,
-        removeShoppingItem
+        removeShoppingItem,
       }}
     >
       {props.children}

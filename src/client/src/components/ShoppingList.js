@@ -64,14 +64,13 @@ function ShoppingList() {
     shoppingItems,
     fetchShoppingItems,
     addShoppingItem,
-    removeShoppingItem
+    removeShoppingItem,
   } = React.useContext(ShoppingListContext)
 
   React.useEffect(() => {
     fetchShoppingItems()
   }, [])
 
-  console.log('shopping items', shoppingItems)
   return (
     <React.Fragment>
       <h1>Shopping Items</h1>
