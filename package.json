@@ -4,9 +4,6 @@
   "main": "index.js",
   "author": "adhitamafikri <adhitamafikri@gmail.com>",
   "license": "MIT",
-  "engines": {
-    "yarn": "1.13.0"
-  },
   "scripts": {
     "start": "node src/server.js",
     "server": "nodemon src/server.js",
