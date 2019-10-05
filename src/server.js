@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const path = require('path')
 require('dotenv/config')
 
 const apiRoutes = require('./routes/api')
@@ -20,6 +21,16 @@ mongoose
 
 // Use Routes
 app.use('/traversy-mern/v1', apiRoutes)
+
+// Serve static assets in Prod
+if (process.env.NODE_ENV === 'production') {
+  // Set static folder
+  app.use(express.static('client/build'))
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+  })
+}
 
 // Listen
 const PORT = process.env.APP_PORT || 4009
