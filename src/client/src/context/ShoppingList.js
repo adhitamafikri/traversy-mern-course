@@ -10,7 +10,7 @@ export function ShoppingListProvider(props) {
   const fetchShoppingItems = async () => {
     try {
       setLoading(true)
-      const response = await axios.get('/.netlify/functions/traversy-mern/v1/items')
+      const response = await axios.get('.netlify/functions/traversy-mern/v1/items')
       setShoppingItems([...shoppingItems, ...response.data])
     } catch(err) {
       console.log(err)
