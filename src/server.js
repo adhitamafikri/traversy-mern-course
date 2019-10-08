@@ -1,7 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
-const serverless = require('serverless-http')
 const path = require('path')
 require('dotenv/config')
 
@@ -31,13 +30,10 @@ if (process.env.NODE_ENV === 'production') {
   app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
   })
-} else {
-  // Listen
-  const PORT = process.env.APP_PORT || 4009
-  app.listen(PORT, function() {
-    console.log('running on PORT ', PORT)
-  })
 }
 
-module.exports = app
-module.exports.handler = serverless(app)
+// Listen
+const PORT = process.env.APP_PORT || 4009
+app.listen(PORT, function() {
+  console.log('running on PORT ', PORT)
+})
